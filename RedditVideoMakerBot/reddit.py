@@ -6,23 +6,23 @@ import elevenlabs
 import subprocess
 import random
 import autosrt
-import time
 import os
 import sys
 print("--------------------------------reddit video creator---------------------------")
-print("thank you for using my program it means alot, idk what buy me a coffee means but do")
+print("thank you for using my program it means alot, if you buy me a coffee i dont even like it but do cuz munz muhahaha")
+print("note: supported languages now are german(de)english(en)arabic(ar)french(fr)spanish(es)")
 print("by plexzer999")
 print("on instagram")
 print("on github")
 slctd_subreddit =input("select subreddit: ")
 comment_count =input("enter comment count: ")
-top_date = input("is the top post weekly , monthly, daily")
+top_date = str(input("is the top post weekly , monthly, daily (hour , day, week month,year, all) : "))
 print("note : make sure to remove 3 min from the gamplay video length or 180s to not cause issues")
 vid_length =int(input("input gameplay.mp4 length (in seconds)"))
 lang =input("language ar for arabic,en for english ,fr for french,es for spanish ... check google translate api language code ")
 file = open("translated_script.txt", "w+")
 file = open("script.txt","w+")
-elevenlabs.set_api_key("elevenlabs_key")
+elevenlabs.set_api_key("")
 translator= Translator()
 
 reddit = praw.Reddit(
@@ -131,17 +131,34 @@ def merge_audio_video(input_video_path, input_audio_path, output_path):
 
 merge_audio_video("wo_audio.mp4","audio.mp3","w_audio.mp4")
 
-subprocess.run(["autosrt","-S","ar","-S","ar","-F" , "srt","audio.mp3"])
+subprocess.run(["autosrt","-S",lang,"-D",lang ,"-F" , "srt","audio.mp3"])
 print("make sure the sub is correct")
 confirm3 = input("continue? [Y/N]")
 if (confirm3=="n"):
       print("cancellling...")
       sys.exit(1)
-
-subprocess.run([  "ffmpeg","-i", "w_audio.mp4","-vf", "subtitles=audio.ar.srt:force_style='Alignment=10,OutlineColour=&H100000000,BorderStyle=3,Outline=1,Shadow=0,Fontsize=15,MarginL=10,MarginR=10,MarginV=10'","content.mp4"])
+if lang=="es":
+      subprocess.run([  "ffmpeg","-i", "w_audio.mp4","-vf",
+                       "subtitles=audio.es.srt:force_style='Alignment=10,OutlineColour=&H100000000,BorderStyle=3,Outline=1,Shadow=0,Fontsize=15,MarginL=10,MarginR=10,MarginV=10'","content.mp4"])
+      os.remove("audio.es.srt")
+elif lang =="en":
+      subprocess.run([  "ffmpeg","-i", "w_audio.mp4","-vf",
+                       "subtitles=audio.en.srt:force_style='Alignment=10,OutlineColour=&H100000000,BorderStyle=3,Outline=1,Shadow=0,Fontsize=15,MarginL=10,MarginR=10,MarginV=10'","content.mp4"])
+      os.remove("audio.en.srt")
+elif lang =="ar":
+      subprocess.run([  "ffmpeg","-i", "w_audio.mp4","-vf",
+                       "subtitles=audio.ar.srt:force_style='Alignment=10,OutlineColour=&H100000000,BorderStyle=3,Outline=1,Shadow=0,Fontsize=15,MarginL=10,MarginR=10,MarginV=10'","content.mp4"])
+      os.remove("audio.ar.srt")
+elif lang =="fr":
+      subprocess.run([  "ffmpeg","-i", "w_audio.mp4","-vf",
+                       "subtitles=audio.fr.srt:force_style='Alignment=10,OutlineColour=&H100000000,BorderStyle=3,Outline=1,Shadow=0,Fontsize=15,MarginL=10,MarginR=10,MarginV=10'","content.mp4"])
+      os.remove("audio.fr.srt")
+elif lang =="de":
+      subprocess.run([  "ffmpeg","-i", "w_audio.mp4","-vf",
+                       "subtitles=audio.de.srt:force_style='Alignment=10,OutlineColour=&H100000000,BorderStyle=3,Outline=1,Shadow=0,Fontsize=15,MarginL=10,MarginR=10,MarginV=10'","content.mp4"])
+      os.remove("audio.de.srt")
 os.remove("wo_audio.mp4")
 os.remove("w_audio.mp4")
-os.remove("audio.ar.srt")
 os.remove("script.txt")
 os.remove("translated_script.txt")
 print("SUCCESS !    yay")
